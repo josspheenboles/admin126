@@ -1,0 +1,217 @@
+Create File Display File move ,Delete , reanme , ..... Eidt 
+===============================================================
+Edit ?? ==> Terminal ===> Not GUI 
+                =============================
+Editor :- 
+============
+vi ---update-->vim  (ubuntu only : sudo apt install vim)
+vim ==> Support Arrows ,................
+vi ~/Music/test.txt ==> Open Vim
+            =======================
+nano 
+===============================================================
+vi ==>can't user -> <- (arrows) in insert mode 
+                      == i,I,o,O,a,A ==> 
+vi ====> Command Mode           Insert Mode
+              ||      <== Esc==
+               :
+              ||
+        Last Line Mode
+===============================================================
+ :w -->Save 
+ :q --> exit 
+ :wq -->Save & exit 
+ :q! -->exit without Save 
+ :wq!-->Save & Exit by Force 
+=========================================================================================================
+gedit ==> Holding ==>Cntrl+C 
+gedit &==>Run Process @background ==> NoHolding 
+                                =========================
+any user must has One Primary Group Only ==> has any number Second Group   
+                                ========================
+Why you must have Promimary group ==> save any File save ownership(owner user ,group)==why==> Permission
+                                ========================
+username ==Primary Group ==> any name 
+
+/etc/passwd ==>7 Fields ==> username:x:uid:gid:Comment:homedir:shell 
+
+Type USer 
+==============
+root ==>Admin ==> id=0
+Services user ==> id = 1 :999 
+Normal user ==> id = 1000 : ....(Sudeors , No Sudeors)
+                                    ==================================
+Create User 
+==================
+sudo useradd username -u [id] -g [id] -G [SecondaryGroup]  -c [Comment] -m  -s [shell /usr/bin/bash] 
+-md [/home/user] or -m
+-p 'PasswdEnc' ==> Not Recommend 
+                            ======================================
+Create Passwd or Change passwd 
+====================================
+sudo passwd username  
+
+=============================================================================================================
+Normal users id > 999 
+Must Create PrimaryGroup 
+Default Behaviour Comamnd useradd 
+useradd -D
+
+sudo useradd -D -s /usr/bin/bash 
+sudo useradd -D
+    GROUP=100
+    HOME=/home
+    INACTIVE=-1
+    EXPIRE=
+    SHELL=/usr/bin/bash
+    SKEL=/etc/skel
+    CREATE_MAIL_SPOOL=no
+
+ls /etc/skel
+Document  Download  Music  testing  Video
+
+sudo mv /etc/skel/testing /etc/skel/Python
+
+ls /etc/skel
+Document  Download  Music  Python  Video
+
+=================================================================================== 
+sudo useradd safa -c "PythonFayoum" -m -s /usr/bin/bash 
+id safa 
+    uid=1003(safa) gid=1003(safa) groups=1003(safa)
+
+sudo passwd safa
+                ========================================
+sudo groupadd python-fayoum
+
+tail -1 /etc/group
+    python-fayoum:x:1004:
+                    ======================
+sudo groupadd -r  python-fayoum ==>generat id without Range Normal User <1000  or >3000
+                ===================================
+sudo useradd maria -c "PythonFayoum" -m -s /usr/bin/bash 
+id maria 
+    uid=1004(maria) gid=1005(maria) groups=1005(maria)
+
+                ===================================
+sudo groupadd -r python-fayoum2
+tail -1 /etc/group
+    python-fayoum2:x:995:
+
+sudo groupadd ahmed  -g 1006 #Create Group
+sudo useradd ahmed -u 1006 -g 1006 -m -s /usr/bin/bash -G python-fayoum2
+sudo passwd ahmed
+tail -1 /etc/passwd
+    ahmed:x:1004:1004::/home/ahmed:/usr/bin/bash
+
+tail -2 /etc/group
+    python-fayoum2:x:995:ahmed
+    ahmed:x:1004:
+
+id ahmed
+    uid=1004(ahmed) gid=1004(ahmed) groups=1004(ahmed),995(python-fayoum2)
+
+=========================================================================================================
+switch user :-
+================= 
+su - safa ==> Reset all Variables 
+su safa ==> Not Reset all Variables 
+                        =========================
+su safa                     su - safa 
+pwd                         pwd
+/home/mina                        /home/safa
+echo $HOME                  echo $HOME
+    /home/safa                   /home/safa
+=========================================================================================================
+sudo usermod safa -L ===> Lock user 
+sudo usermod safa -U ===> unLock user 
+sudo usermod safa -aG sudo ==>Append Sudo Group for safa 
+=========================================================================================================
+su - root or su - or su or su root ==> Passwd root 
+sudo -i ===> using sudo passwd 
+=========================================================================================================
+ubuntu ====> root ==> sudo 
+=========================================================================================================
+Access Control List (ACL):- 
+=========================
+    Users /Group ===> Commands Run 
+    sudo cat /etc/sudoers ==> Not Edit Direct ==> visudo ==> Check Syntax  
+    sudo visudo
+=========================================================================================================
+id 
+    uid=1000(mina) gid=1000(mina) groups=1000(mina),4(adm),20(dialout),24(cdrom),27(sudo),30(dip),46(plugdev),122(lpadmin),135(lxd),136(sambashare)
+groups
+    mina adm dialout cdrom sudo dip plugdev lpadmin lxd sambashare
+                    =========================================
+id safa 
+    uid=1003(safa) gid=1003(safa) groups=1003(safa),27(sudo)
+groups safa
+    safa : safa sudo
+=========================================================================================================
+sudo userdel -r ali ==> delete user with  delete all Files(Home , Spool Mail)
+sudo userdel  ali ==>delete user withou delete  Files(Home , Spool Mail)
+=========================================================================================================
+Password 
+===========
+/etc/passwd ==> info Users
+/etc/shadow ==> password Users  
+ login name: encrypted password:date of last password change: min:max:warning:inactive:experieAccount:reserved
+/etc/group ==> info Group 
+/etc/gshadow ==> password Group 
+                    ===================================
+sudo tail -2 /etc/shadow 
+    safa:$y$j9T$vomP8o0uc8cf90ZHYvvRK:19884:0:99999:7:::
+    helana:!:19884:0:99999:7:::
+=========================================================================================================
+                                            chage 
+                                          ===========
+chage   
+-l ==> Check info Password 
+-i ==> inactive Password 
+-E ==> Account Expire (date "2025-02-02") 
+-M ==> Password Expire (Number)
+-m ==> Minimum days to change passworc 
+-w ==> Warning 
+                    ==================================================
+sudo chage  safa -l
+Last password change					: يون 10, 2024
+Password expires					: never
+Password inactive					: never
+Account expires						: never
+Minimum number of days between password change		: 0
+Maximum number of days between password change		: 99999
+Number of days of warning before password expires	: 7
+                ==================================================
+sudo chage  safa -M 30 ==> Password Expire 30
+                ==================================================
+sudo chage safa -l 
+            Last password change					: يون 10, 2024
+            Password expires					: يول 10, 2024
+            Password inactive					: never
+            Account expires						: never
+            Minimum number of days between password change		: 0
+            Maximum number of days between password change		: 30
+            Number of days of warning before password expires	: 7
+            ==================================================
+sudo chage  safa -E "2025-02-02"
+                ==================================================
+sudo chage safa -l 
+        Last password change					: يون 10, 2024
+        Password expires					: يول 10, 2024
+        Password inactive					: never
+        Account expires						: فبر 02, 2025
+        Minimum number of days between password change		: 0
+        Maximum number of days between password change		: 30
+        Number of days of warning before password expires	: 7
+        ==================================================
+sudo chage  safa -M 99999 -E -1 
+                    ======================================
+sudo chage safa -l 
+        Last password change					: يون 10, 2024
+        Password expires					: never
+        Password inactive					: never
+        Account expires						: never
+        Minimum number of days between password change		: 0
+        Maximum number of days between password change		: 99999
+        Number of days of warning before password expires	: 7
+

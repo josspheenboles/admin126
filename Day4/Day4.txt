@@ -1,0 +1,245 @@
+Variables :-
+=================
+   1- Enviroment Variable ==>Shell 
+   2- local Variable ==>user
+   3- predefined Variable  ==>$1,$0 (Bash)
+=====================================================================================
+Enviroment Variables :-
+===================== 
+            HOME,HOSTNAME,PWD,PS1,PS2,PS3,PATH
+            list all Enviroment Variables current Shell  :- env, printenv 
+            list all Enviroment Variables Bash,sh,ksh :- man bash , man sh , man ksh
+=====================================================================================
+Display All shell ? ==> cat /etc/shells
+=====================================================================================
+How Display Value of Variable ? 
+echo $varName
+=====================================================================================
+Prompt :- 
+==========
+PS1="\u @ \t : \W $"  ==>mina @ 11:53:47 : ~ $ 
+                =========================
+echo Hello \
+> Nagy
+Hello Nagy
+                =====================
+head -1 \
+> /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+                =====================
+PS2=">>"
+                =====================
+head -1 \
+>>/etc/passwd
+root:x:0:0:root:/root:/bin/bash
+                =====================
+PS3 ===> SELECT 
+                =====================
+PATH===>Variable Enviroment
+============================================================================
+echo $PATH
+    /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/home/mina/Music/Benisuef_Bash_Command
+vi ~/Permission/fileMina
+chmod u+x ~/Permission/fileMina 
+~/Permission/fileMina
+Sosana Loves Linux and hates Windows
+
+
+fileMina ==>Error ==>fileMina: command not found
+
+
+PATH=$PATH:/home/mina/Permission
+
+echo $PATH
+/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/home/mina/Music/Benisuef_Bash_Command:/home/mina/Permission
+
+fileMina ==> Sosana Loves Linux and hates Windows
+=========================================================================================================================================================================================
+type fileMina 
+        fileMina is hashed (/home/mina/Permission/fileMina)
+type cd 
+        cd is a shell builtin
+type if 
+        if is a shell keyword
+type cat 
+        cat is /usr/bin/cat
+type c
+        c is aliased to `clear'
+=========================================================================================================================================================================================
+whereis fileMina
+    fileMina: /home/mina/Permission/fileMina
+which fileMina
+    /home/mina/Permission/fileMina
+whereis cat
+    cat: /usr/bin/cat /usr/share/man/man1/cat.1.gz
+
+=========================================================================================================================================================================================
+Terminal PTS(Non Login Terminal)            ||                Terminal tty (Login Terminal)
+===============================================================================================
+Open Gui                                                        Open Server 
+/etc/bash.bashrc                                                /etc/profile (Call any User login Terminal Only)
+/home/userlogin/.bashrc                                         /etc/bash.bashrc (Call any User any Terminal)
+                                                                /home/userlogin/.pofile (Call specific User login Terminal Only)
+                                                                /home/userlogin/.bashrc (Call specific User any Terminal)
+=============================================================================================== 
+whoami ==>Current Login user 
+who ==>All User 
+    mina     :1           2024-06-11 08:51 (:1)
+    mina     pts/2        2024-06-11 12:25
+    safa     pts/2        2024-06-11 12:25
+===============================================================================================    
+w ==>All User more Info 
+     12:33:42 up  3:47,  3 users,  load average: 1.31, 1.65, 1.59
+    USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT
+    mina     :1       :1               08:51   ?xdm?   5:17m  0.02s /usr/li
+    mina     pts/2    -                12:25   30.00s  0.19s  0.06s -bash
+    safa     pts/2    -                12:25   30.00s  0.19s  0.06s -bash
+===============================================================================================
+
+Process :- 
+================
+App is Running  
+======================================================================
+Terminal(shell) ==>Process 
+Command ===> Process 
+APP
+======================================================================
+ps ==> process status 
+============================================================
+ps  ==> List Process Current Terminal 
+    PID TTY          TIME CMD
+   7184 pts/0    00:00:00 bash
+   7234 pts/0    00:00:00 ps
+============================================================
+list all prcoess all users 
+==============================
+ps aux 
+
+every Process has PID(Process ID )
+Parent {PPID Parent Process ID}--->Child {PID}
+            =================
+list all prcoess all users with PPID(Parent Process ID )
+=============================================================
+ps -ef 
+            =================
+poweron--> BIOS --> Bootloader--> Kernel ---> Systemd or Init 
+================================================================
+pstree
+            ===================
+ps -u mina ==> list all Process (Mina User )
+ps -u root ==> list all Process (root User )
+============================================================
+foreground(Holding Terminal) --cntrl+c-->Terminate 
+foreground(Holding Terminal) --cntrl+z-->Stopped 
+==============================================================================
+How Run Process in Background --> using & 
+gedit ~/Videos/file & ==>(& ==> Run Process in Background)
+==============================================================================
+How Run Process From foreground to  Background 
+cntrl+z(Stopped)--> jobs --> bg %[jobID]
+                ===========================
+How Run Process From Background to  foreground 
+jobs --> fg %[jobID]
+                 ===========================
+jobs --> list Running & Stopped Process (Current Terminal)
+
+
+gedit ~/Music/Python/filps ==>Run Process foreground
+        ^Z  ===>cntrl+z
+        [1]+  Stopped                 gedit ~/Music/Python/filps
+jobs  ==> list Process Stopped & Running Background
+        [1]+  Stopped                 gedit ~/Music/Python/filps
+bg %1   ==>from foreground to Background
+        [1]+ gedit ~/Music/Python/filps & ==>Run Process Background
+gedit ~/Music/Python/filps &
+        [2] 5334
+        [1]   Done                    gedit ~/Music/Python/filps
+jobs ==> list Process Stopped & Running Background
+        [2]+  Running                 gedit ~/Music/Python/filps &
+fg %2  ==>from Background to foreground
+gedit ~/Music/Python/filps
+        ^Z
+        [2]+  Stopped                 gedit ~/Music/Python/filps
+        jobs
+        [2]+  Stopped                 gedit ~/Music/Python/filps
+bg %2 ==>from foreground to Background
+        [2]+ gedit ~/Music/Python/filps &
+jobs ==> list Process Stopped & Running Background
+        [2]+  Running                 gedit ~/Music/Python/filps &
+
+
+
+
+
+
+kill %[JobIDs] ==> kill Send any Signal ==>By Default Terminate
+==============================================================================
+gedit 
+^C
+gedit 
+^Z
+[1]+  Stopped                 gedit
+jobs
+[1]+  Stopped                 gedit
+bg %1
+[1]+ gedit &
+jobs
+[1]+  Running                 gedit &
+===============================================================================
+pgrep -la [processName]==>Search PID
+=============================================================================== 
+pgrep sleep 
+9263
+9300
+pgrep -la sleep 
+9263 sleep 100000
+9300 sleep 5000
+===================================================================================
+kill -l 
+===================================================================================
+kill -SIGSTOP 9263  or  kill -19 9263 ==> Stop Signal 
+kill -SIGTERM 9263  or  kill -15 9263 or kill 9263 ==> Terminate Signal 
+===================================================================================
+pgrep -la sys
+1 /sbin/init splash
+327 /lib/systemd/systemd-journald
+389 /lib/systemd/systemd-udevd
+649 /lib/systemd/systemd-oomd
+650 /lib/systemd/systemd-resolved
+651 /lib/systemd/systemd-timesyncd
+799 /usr/sbin/rsyslogd -n -iNONE
+804 /lib/systemd/systemd-logind
+2679 /lib/systemd/systemd --user
+===================================================================================
+USer -- GUI --> APP
+Developer -- CLI -->APP  /Linux User --CLI-->OS(Linux)
+APP -- API(Application Programming Interface) --> APP
+APP -- SyStemCall --> OS 
+===================================================================================
+pgrep -u mina -l or pgrep -l -u mina or pgrep -lu mina==> All Process Mina 
+pgrep -v mina -l ==> All Process Except Mina 
+pgrep -x sleep ==> Exact
+===================================================================================
+nice -n 5 sleep 5000 & ==>Create Process with Specific Nice
+check Priority ==> top 
+                ========================================================
+renice -n 15 -p 10629
+    10629 (process ID) old priority 5, new priority 15
+                ========================================================
+renice -n 0 -p 10629
+    renice: failed to set priority for 10629 (process ID): Permission denied
+                ========================================================
+sudo renice -n 0 -p 10629 
+    10629 (process ID) old priority 15, new priority 0
+===================================================================================
+kill -l 
+kill Command  ---> any Send Signal --> Process 
+                    Stop Signal
+                    terminate Signal
+                    kill  Signal 
+                    CONT Signal
+===================================================================================
+
+
+
+

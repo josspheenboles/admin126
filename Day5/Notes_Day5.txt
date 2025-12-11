@@ -1,0 +1,484 @@
+===================================================================================
+pgrep -u mina -l or pgrep -l -u mina or pgrep -lu mina==> All Process Mina 
+pgrep -v mina -l ==> All Process Except Mina 
+pgrep -x sleep ==> Exact
+===================================================================================
+nice -n 5 sleep 5000 & ==>Create Process with Specific Nice
+check Priority ==> top 
+                ========================================================
+renice -n 15 -p 10629
+    10629 (process ID) old priority 5, new priority 15
+                ========================================================
+renice -n 0 -p 10629
+    renice: failed to set priority for 10629 (process ID): Permission denied
+                ========================================================
+sudo renice -n 0 -p 10629 
+    10629 (process ID) old priority 15, new priority 0
+===================================================================================
+kill -l 
+kill Command  ---> any Send Signal --> Process 
+                    Stop Signal
+                    terminate Signal
+                    kill  Signal 
+                    CONT Signal
+===================================================================================
+Redirection :- 0 Input , output 1 , 2 Error 
+===================================================
+change Default O/p ,Default Error from Screen to File. 
+change Default I/p from keyboard to File. 
+                    ============================
+Default Input 
+=================
+cat 0< /etc/passwd (or) cat < /etc/passwd (or) cat /etc/passwd #==>input from File & O/P Screen
+cat  #===> Input from keyboard & O/P Screen 
+===============================================================================
+Default o/p 
+==============
+cat /etc/passwd > ~/file  (or) cat /etc/passwd 1> ~/file  [i/p file passwd , O/P File(Overwrite)]
+cat /etc/passwd >> ~/file (or) cat /etc/passwd 1>> ~/file  [i/p file passwd  , O/P File(Append)]
+echo "hello Python " > ~/Music/file_red  or echo "hello Python " 1> ~/Music/file_red 
+
+Create File With Data :-
+==========================
+cat >> ~/Videos/file [I/p Keyboard, O/P File  (Cntrl+D Save Exit Terminal)]
+cat > ~/Music/file_red
+hello mina 
+we love linux 
+we hate windows
+we love OpenSource 
+cntrl+D ==>Save Data
+===============================================================================
+Default Error 
+==============
+cat /etc/shadow 2> ~/Videos/error
+cat ~/Videos/error 
+cat: /etc/shadow: Permission denied
+
+cat /etc/shadow 2> ~/Music/error
+cat /etc/shadow 2>> ~/Music/error
+cat /etc/shadow 2> /dev/null
+
+command ---Output---Screen 
+        ---Error ---Screen    
+
+command ---Output-  >> or > or 1> or 1>>  --File 
+        ---Error -2>>--File    
+
+ls -R / 2> ~/Music/error > ~/Music/file_red 
+
+ls -lh ~/Music/file_red 
+    -rw-rw-r-- 1 mina mina 35M يون 12 10:12 /home/mina/Music/file_red
+ls -lh ~/Music/error 
+    -rw-rw-r-- 1 mina mina 153K يون 12 10:12 /home/mina/Music/error
+
+
+===============================================================================
+ls -l /dev/std*
+lrwxrwxrwx 1 root root 15 يون  4 09:08 /dev/stderr -> /proc/self/fd/2 (softlink)
+lrwxrwxrwx 1 root root 15 يون  4 09:08 /dev/stdin -> /proc/self/fd/0
+lrwxrwxrwx 1 root root 15 يون  4 09:08 /dev/stdout -> /proc/self/fd/1
+===============================================================================
+ln -s ~/Videos/fileMina ~/Music/softlink 
+ls -l ~/Music/softlink 
+    lrwxrwxrwx 1 mina mina 26 يون  4 11:23 /home/mina/Music/softlink -> /home/mina/Videos/fileMina
+ln ~/Videos/fileMina ~/Music/hardlink 
+ls -l ~/Music/
+    -rwxr-x--- 2 mina mina        20 يون  2 11:54  hardlink
+    lrwxrwxrwx 1 mina mina        26 يون  4 11:23  softlink -> /home/mina/Videos/fileMina
+                ===============================================================
+ls -i ~/Videos/fileMina 
+1065952 /home/mina/Videos/fileMina
+                ===============================================================
+ls -i ~/Music/hardlink 
+1065952 /home/mina/Music/hardlink
+                ===============================================================
+vi ~/Videos/fileMina 
+                ===============================================================
+cat ~/Videos/fileMina 
+hello mina
+                ===============================================================
+cat ~/Music/hardlink 
+hello mina
+                ===============================================================
+cat ~/Music/softlink 
+hello mina
+                ===============================================================
+rm ~/Videos/fileMina 
+                ===============================================================
+ls -l ~/Music/
+-rwxr-x--- 1 mina mina        11 يون  4 11:29  hardlink
+lrwxrwxrwx 1 mina mina        26 يون  4 11:23  softlink -> /home/mina/Videos/fileMina
+                =================================================================
+cat ~/Music/softlink 
+cat: /home/mina/Music/softlink: No such file or directory
+                =================================================================
+cat ~/Music/hardlink 
+hello mina
+                =================================================================
+wc /etc/passwd
+  56  100 3359 /etc/passwd
+wc -l /etc/passwd ==>line 
+wc -w /etc/passwd ==>Word 
+wc -c /etc/passwd ==>char 
+                =================================================================
+wc -l /etc/passwd
+    56 /etc/passwd
+                =================================================================
+Pipline 
+=================
+
+Command1 --O/P-->Command2 --o/P-->Command3 ---->Screen
+                                           -- >>-->File
+Command1 | Command2 | Command3 
+
+cat /etc/passwd | grep mina 
+mina:x:1000:1000:mina,,,:/home/mina:/usr/bin/bash
+        =====================================================================
+grep  ==> Deal with line (Filter Record)
+cut   ==> Deal with Columns(Filter Columns)
+=====================================================================
+
+
+grep ^m /etc/passwd 
+        man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+        mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+        messagebus:x:102:105::/nonexistent:/usr/sbin/nologin
+        mina:x:1000:1000:mina,,,:/home/mina:/usr/bin/bash
+        mongodb:x:132:65534::/home/mongodb:/usr/sbin/nologin
+        mysql:x:133:142:MySQL Server,,,:/nonexistent:/bin/false
+        mohamed:x:1002:1002::/home/mohamed:/usr/bin/bash
+
+grep sh$ /etc/passwd 
+        root:x:0:0:root:/root:/bin/bash
+        mina:x:1000:1000:mina,,,:/home/mina:/usr/bin/bash
+        postgres:x:134:143:PostgreSQL administrator,,,:/var/lib/postgresql:/bin/bash
+        ali:x:1001:1001::/home/ali:/usr/bin/bash
+        mohamed:x:1002:1002::/home/mohamed:/usr/bin/bas
+
+grep sh$ /etc/passwd | wc -l   ===> 5
+grep bash$ /etc/passwd ==> Any line end Bash 
+grep -v bash$ /etc/passwd ==> Any line doesn't end Bash 
+
+grep  Bash$ /etc/passwd
+grep -i  Bash$ /etc/passwd ==> I ignore Case Sensitive
+root:x:0:0:root:/root:/bin/bash
+mina:x:1000:1000:mina,,,:/home/mina:/usr/bin/bash
+postgres:x:134:143:PostgreSQL administrator,,,:/var/lib/postgresql:/bin/bash
+ali:x:1001:1001::/home/ali:/usr/bin/bash
+mohamed:x:1002:1002::/home/mohamed:/usr/bin/bash
+
+cut -d : -f 1,7 /etc/passwd ==>username,shell every Record
+cut -d : -f 1,6 /etc/passwd ==>username,HomeDirectory every Record
+cut -d: -f 5-7 /etc/passwd  ==>from col 5 to col 7
+root:/root:/bin/bash
+                    ==========================
+cut -d : -f 1,6 /etc/passwd | sort   //Sort (a-z)
+cut -d : -f 1,6 /etc/passwd | sort -r  //Sort (z-a)
+
+
+Pipline 
+============
+command1 ==O/P==> Command2 ==O/P ==>Command3 ......
+command1 | command2 |command3 | command4 
+
+
+
+
+
+grep "bash$" /etc/passwd
+        root:x:0:0:root:/root:/bin/bash
+        mina:x:1000:1000:mina,,,:/home/mina:/usr/bin/bash
+        postgres:x:134:143:PostgreSQL administrator,,,:/var/lib/postgresql:/bin/bash
+        mohamed:x:1002:1002::/home/mohamed:/usr/bin/bash
+        safa:x:1003:1003:PythonFayoum:/home/safa:/usr/bin/bash
+        ahmed:x:1004:1004::/home/ahmed:/usr/bin/bash
+        helana:x:1005:1005::/home/helana:/usr/bin/bash
+        
+grep "bash$" /etc/passwd | sort 
+        ahmed:x:1004:1004::/home/ahmed:/usr/bin/bash
+        helana:x:1005:1005::/home/helana:/usr/bin/bash
+        mina:x:1000:1000:mina,,,:/home/mina:/usr/bin/bash
+        mohamed:x:1002:1002::/home/mohamed:/usr/bin/bash
+        postgres:x:134:143:PostgreSQL administrator,,,:/var/lib/postgresql:/bin/bash
+        root:x:0:0:root:/root:/bin/bash
+        safa:x:1003:1003:PythonFayoum:/home/safa:/usr/bin/bash
+
+grep "bash$" /etc/passwd | sort -r 
+        safa:x:1003:1003:PythonFayoum:/home/safa:/usr/bin/bash
+        root:x:0:0:root:/root:/bin/bash
+        postgres:x:134:143:PostgreSQL administrator,,,:/var/lib/postgresql:/bin/bash
+        mohamed:x:1002:1002::/home/mohamed:/usr/bin/bash
+        mina:x:1000:1000:mina,,,:/home/mina:/usr/bin/bash
+        helana:x:1005:1005::/home/helana:/usr/bin/bash
+        ahmed:x:1004:1004::/home/ahmed:/usr/bin/bash
+
+
+
+grep "bash$" /etc/passwd | sort -t : -k 3   ==> logical Error XXXXX
+    root:x:0:0:root:/root:/bin/bash
+    mina:x:1000:1000:mina,,,:/home/mina:/usr/bin/bash
+    mohamed:x:1002:1002::/home/mohamed:/usr/bin/bash
+    safa:x:1003:1003:PythonFayoum:/home/safa:/usr/bin/bash
+    ahmed:x:1004:1004::/home/ahmed:/usr/bin/bash
+    helana:x:1005:1005::/home/helana:/usr/bin/bash
+    postgres:x:134:143:PostgreSQL administrator,,,:/var/lib/postgresql:/bin/bash
+
+
+# sort by Default delimiter " " ---> -t delimiter -k filedNumber
+# sort by Default Sort character ---> sort Number -n 
+# -r ===> Reverse (From big to small )
+
+
+grep "bash$" /etc/passwd | sort -t : -k 3 -n  
+
+
+    root:x:0:0:root:/root:/bin/bash
+    postgres:x:134:143:PostgreSQL administrator,,,:/var/lib/postgresql:/bin/bash
+    mina:x:1000:1000:mina,,,:/home/mina:/usr/bin/bash
+    mohamed:x:1002:1002::/home/mohamed:/usr/bin/bash
+    safa:x:1003:1003:PythonFayoum:/home/safa:/usr/bin/bash
+    ahmed:x:1004:1004::/home/ahmed:/usr/bin/bash
+    helana:x:1005:1005::/home/helana:/usr/bin/bash
+
+grep "bash$" /etc/passwd | sort -t : -k 3 -n -r 
+    helana:x:1005:1005::/home/helana:/usr/bin/bash
+    ahmed:x:1004:1004::/home/ahmed:/usr/bin/bash
+    safa:x:1003:1003:PythonFayoum:/home/safa:/usr/bin/bash
+    mohamed:x:1002:1002::/home/mohamed:/usr/bin/bash
+    mina:x:1000:1000:mina,,,:/home/mina:/usr/bin/bash
+    postgres:x:134:143:PostgreSQL administrator,,,:/var/lib/postgresql:/bin/bash
+    root:x:0:0:root:/root:/bin/bash
+
+grep "bash$" /etc/passwd | sort -t : -k 3 -n -r | tr ":" "~"
+    helana~x~1005~1005~~/home/helana~/usr/bin/bash
+    ahmed~x~1004~1004~~/home/ahmed~/usr/bin/bash
+    safa~x~1003~1003~PythonFayoum~/home/safa~/usr/bin/bash
+    mohamed~x~1002~1002~~/home/mohamed~/usr/bin/bash
+    mina~x~1000~1000~mina,,,~/home/mina~/usr/bin/bash
+    postgres~x~134~143~PostgreSQL administrator,,,~/var/lib/postgresql~/bin/bash
+
+
+
+grep "bash$" /etc/passwd | sort -t : -k 3 -n -r | tr "a-z" "A-Z"
+    HELANA:X:1005:1005::/HOME/HELANA:/USR/BIN/BASH
+    AHMED:X:1004:1004::/HOME/AHMED:/USR/BIN/BASH
+    SAFA:X:1003:1003:PYTHONFAYOUM:/HOME/SAFA:/USR/BIN/BASH
+    MOHAMED:X:1002:1002::/HOME/MOHAMED:/USR/BIN/BASH
+    MINA:X:1000:1000:MINA,,,:/HOME/MINA:/USR/BIN/BASH
+    POSTGRES:X:134:143:POSTGRESQL ADMINISTRATOR,,,:/VAR/LIB/POSTGRESQL:/BIN/BASH
+    ROOT:X:0:0:ROOT:/ROOT:/BIN/BASH
+
+grep "bash$" /etc/passwd | sort -t : -k 3 -n -r | tr "a-z" "A-Z" | cut -d : -f1,7
+HELANA:/USR/BIN/BASH
+AHMED:/USR/BIN/BASH
+SAFA:/USR/BIN/BASH
+MOHAMED:/USR/BIN/BASH
+MINA:/USR/BIN/BASH
+POSTGRES:/BIN/BASH
+ROOT:/BIN/BASH
+
+grep "bash$" /etc/passwd | sort -t : -k 3 -n -r | tr "a-z" "A-Z" | cut -d : -f1,7 |less
+
+
+cat /etc/passwd | tee ~/Music/newpasswd ==>O/P Screen +File 
+
+ls -aR / 2> /dev/null | grep '.profile'
+
+
+find / -name mina -type f  2>/dev/null
+    /home/mina/Desktop/Testing/mina
+    /home/mina/.ssh/mina
+    /var/mail/mina
+                ===========================
+find / -name mina -type d  2>/dev/null
+    /home/mina
+    /media/min
+                ===========================
+find /  -size +1G  2>/dev/null
+                ===========================
+find /  -perm 666  2>/dev/null
+    ===============================================================
+cp /etc/passwd ~/Music/NewPasswd
+diff /etc/passwd ~/Music/NewPasswd
+vi ~/Music/NewPasswd ==>delete First Line 
+diff /etc/passwd ~/Music/NewPasswd
+    1d0
+    < root:x:0:0:root:/root:/bin/bash
+diff  ~/Music/NewPasswd /etc/passwd
+    0a1
+    > root:x:0:0:root:/root:/bin/bash
+    ===============================================================
+Search System [ls -R / , find , locate ] 
+===============
+ls -R / 2> /dev/null | grep ^/etc
+
+find path -options 
+======================
+find / -name etc 2>/dev/null 
+find /home/mina -size +10M 
+find /home/mina -size +1G -type f
+===============================================================
+cat /etc/passwd > ~/Videos/fileMina==>Save File & Not See O/p Screen  
+cat /etc/passwd |tee ~/Videos/fileMina ==>See O/p Screen & Save File 
+===============================================================
+echo Hello Mina 
+    Hello Mina
+echo Hello Mina | tr 'a-z' 'A-Z'
+    HELLO MINA
+cat /etc/passwd | tr ':' ';'
+===============================================================
+sort ~/Videos/fileMina 
+    11:mina:ahmed
+    1:martina:ali
+    22:mohamed:ayman
+    31:ayman:mostafa
+sort -n ~/Videos/fileMina 
+    1:martina:ali
+    11:mina:ahmed
+    22:mohamed:ayman
+    31:ayman:mostafa
+sort -t: -k2 ~/Videos/fileMina 
+    31:ayman:mostafa
+    1:martina:ali
+    11:mina:ahmed
+    22:mohamed:ayman
+==============================================================================================================================  
+ls -R / >~/Videos/testMina 2>/dev/null &
+jobs
+[1]+  Exit 1                  ls --color=auto -R / > ~/Videos/testMina 2> /dev/null
+ls -lh ~/Videos/testMina 
+-rw-rw-r-- 1 mina mina 37M يون  4 12:21 /home/mina/Videos/testMina
+         
+gzip ~/Videos/testMina  ==> testMina.gz 
+#-rw-rw-r-- 1 mina mina  7.2M يون  4 12:21  testMina.gz
+gunzip ~/Videos/testMina  ==> testMina.gz 
+compress ~/Videos/testMina ==> testMina.Z 
+#-rw-rw-r-- 1 mina mina  12M يون  4 12:21  testMina.Z
+uncompress ~/Videos/testMina.Z 
+zcat ~/Videos/testMina.gz
+==============================================================================================================================
+Folder ==> Archive ==>Compress 
+==============================================================================================================================
+tar -cvf ~/Videos/etc.tar /etc
+gzip ~/Videos/etc.tar 
+gunzip ~/Videos/etc.tar 
+
+cd Videos/
+tar -cvf ~/Videos/etc.tar /etc
+tar -xvf ~/Videos/etc.tar
+tar -zcvf ~/Videos/etc.tar.gz /etc  ==>gzip 
+tar -jcvf ~/Videos/etc.tar.bz2 /etc ==>bzip2
+tar -zxvf ~/Videos/etc.tar.gz 
+tar -jxvf ~/Videos/etc.tar.bz2 
+
+ls -lh etc.tar 
+-rw-rw-r-- 1 mina mina 15M يون  4 12:30 etc.tar
+bzip2 etc.tar
+ls -lh etc.tar.bz2 
+-rw-rw-r-- 1 mina mina 1.8M يون  4 12:30 etc.tar.bz2
+bunzip2 etc.tar.bz2 
+tar -jcvf ~/Videos/etc.tar.bz2 /etc
+==============================================================================================================================
+- file ==> some data Stored in Memory 
+- inode ==> internal os DataStructure contains 
+  Specific Information about the File (inodeNumber,Size - 
+  Permissions -TimeStamp -Owner -Group...etc)
+-inode ==> provides a pointer to the to disk blocks
+           contains file data
+		----------------------
+Notes : fileName not Stored at inode
+FileName Stored ==> Directory Entry (Dentry)
+Dentry=NameFile+Inode
+		----------------------
+ls -i fileName 
+find / -inum 35377789 2>/dev/null
+		----------------------
+Hard Linking (two or more file with the Same Inode)
+deleing ?if original file or any hard linking file deleted 
+the other will be valid . 
+------------------------------------------------------------------------
+Characteristicc : 
+- Not Effect size ==> Same inode
+- HardLink Not working on directoy [you must use Hard linking with tar ]
+- Same Parition 
+------------------------------------------------------------------------------------------ 
+Soft Linking [Symbolic ][Shortcut](File Pointing to another file like shortcut in windows)
+deleing ?if original file will become broken.
+
+ln -s ~/file ~/Desktop/soft_file
+
+- different inod 
+- SoftLink working on directoy & file 
+- different Parition 
+-------------------------------------------------------------------------------------------
+Comperssion 
+---------------
+Notes :- 
+du -sh fileName or ls -lh fileName ==> to view fileSize
+
+$ gzip file	
+$ ls -lh file.gz or  du -sh file.gz ===> -rw-rw----. 1 mina mina 651K May 26 12:27 file.gz
+$ gunzip file.gz
+					-----------
+$ bzip2 file
+$ ls -lh file.bz2  or  du -sh file.bz2 ==> -rw-rw----. 1 mina mina 563K May 26 12:27 file.bz2
+$ bunzip2 file.bz2
+					------------
+$compress file
+$ ls -lh file.Z
+$uncompress file.Z
+					------------
+$zip myfile.zip file [Notes:-  -m ==> Deletes the original files after zipping.]
+$unzip myfile.zip
+bzip2 ==> more Comperssion , Slow 
+gzip ==> less Comperssion , Fast 
+
+-----------------------------
+Archiving 
+-----------
+How to create,
+
+1-a) create tar Files :
+-------------------
+tar cvf  [name.tar] [folderpath]
+tar cvf mina.tar test/
+	----------------------
+1-b)How Check Size of Files 
+-----------------------------
+du -sh name.tar    or ls -lh name.tar
+	----------------------
+$ tar cvf backup.tar dir1
+$ du -sh backup.tar ===> 27M	backup.tar
+------------------------------------------------------------------
+2) Display Content of tar files -t 
+----------------------------------
+$ tar tvf backup.tar
+-------------------------------------------------------------------
+4) compress tar files
+----------------------
+4-a) USing gzip & bzip2
+------------------------
+$ gzip backup.tar 
+$ du -sh backup.tar.gz ===> 3.2M	backup.tar.gz
+$ gunzip backup.tar.gz
+		--------------------
+4-b) Bulid In Command tar with Compress in same Command
+tar czvf backup.tar.gz dir1
+du -sh backup.tar.gz   ========> 3.2M	backup.tar.gz
+		--------------------
+tar cjvf backup.tar.bz2 dir1
+du -sh backup.tar.gz =========> 2.8M	backup.tar.gz
+		--------------------
+5) Extract tar & decompress
+tar xzvf backup.tar.gz
+tar xjvf backup.tar.bz2
+Notes : -z gzip   -j bzip2
+
+                ================================================
+Self Study :- 
+================
+Deadline 15/6/2024 ==> 12 PM 
+  # Package Manager  (pkg Vs apt ubuntu [ apt vs apt-get ] )  , (Yum , RPM Redhat)
+                apt install package 
+                apt update 
+================================================================================================
